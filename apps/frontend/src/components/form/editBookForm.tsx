@@ -1,24 +1,26 @@
 "use client";
 
-import { useCreateBook } from "@/hooks/useCreateBook";
+import { useEditBook } from "@/hooks/useEditBook";
+import { useSingleBook } from "@/hooks/useSingleBook";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useRouter } from "next/navigation";
 import * as Yup from "yup";
 
-const CreateBookForm = () => {
-	const { mutate, error } = useCreateBook();
+const EditBookForm = ({ bookId }: { bookId: string }) => {
 	const router = useRouter();
+	const { data: book, isLoading } = useSingleBook(bookId);
+	const { mutate, error } = useEditBook();
 
 	const initialValues = {
-		namaBuku: "",
-		kategoriBuku: "",
-		penerbit: "",
-		isbn: 0,
-		issn: 0,
-		pembuat: "",
-		tahunPembuatan: 0,
-		harga: 0,
-		keterangan: "",
+		namaBuku: book?.namaBuku || "",
+		kategoriBuku: book?.kategoriBuku || "",
+		penerbit: book?.penerbit || "",
+		isbn: Number(book?.isbn) || 0,
+		issn: Number(book?.issn) || 0,
+		pembuat: book?.pembuat || "",
+		tahunPembuatan: book?.tahunPembuatan || 0,
+		harga: book?.harga || 0,
+		keterangan: book?.keterangan || "",
 	};
 
 	const validationSchema = Yup.object({
@@ -38,26 +40,29 @@ const CreateBookForm = () => {
 	});
 
 	const handleSubmit = (values: typeof initialValues) => {
-		console.log("firing submit");
-
-		mutate(values, {
-			onSuccess: (data) => {
-				console.log("Book created!", data);
-				router.push("/");
-			},
-			onError: (err) => {
-				console.error("Failed to create book", err);
-			},
-		});
+		console.log("Firing submit", values);
+		mutate(
+			{ bookId: bookId, bookData: values },
+			{
+				onSuccess: (data) => {
+					console.log("Book updated!", data);
+					router.push("/");
+				},
+				onError: (err) => {
+					console.error("Failed to update book", err);
+				},
+			}
+		);
 	};
 
-	const handleClick = () => {
+	const handleCancel = () => {
 		router.push("/");
 	};
 
 	return (
 		<Formik
 			initialValues={initialValues}
+			enableReinitialize
 			validationSchema={validationSchema}
 			onSubmit={handleSubmit}
 		>
@@ -96,7 +101,7 @@ const CreateBookForm = () => {
 						Submit
 					</button>
 					<button
-						onClick={handleClick}
+						onClick={handleCancel}
 						className='w-1/2 h-10 mt-4 cursor-pointer bg-red-500 text-white rounded-lg hover:bg-red-600 transition'
 					>
 						Cancel
@@ -107,4 +112,4 @@ const CreateBookForm = () => {
 	);
 };
 
-export default CreateBookForm;
+export default EditBookForm;

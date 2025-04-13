@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { db } from "../db/db";
 import { bookScheme } from "../db/schema/book";
 import { generateRandomId } from "../helpers/generateRandomId";
-import { eq, isNull } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 
 export const bookRoutes = new Hono();
 
@@ -137,5 +137,26 @@ bookRoutes.get("/all-books", async (c) => {
 		return c.json({ success: true, data: result });
 	} catch (error) {
 		return c.json({ success: false, error: error }, 500);
+	}
+});
+
+bookRoutes.get("/single/:id", async (c) => {
+	try {
+		const id = c.req.param("id");
+		if (!id) return c.json({ success: false, error: "Missing book ID" }, 400);
+
+		const [book] = await db
+			.select()
+			.from(bookScheme)
+			.where(and(eq(bookScheme.id, id), isNull(bookScheme.deletedAt)));
+
+		if (!book) {
+			return c.json({ success: false, error: "Book not found" }, 404);
+		}
+
+		return c.json({ success: true, data: book });
+	} catch (error) {
+		console.error(error);
+		return c.json({ success: false, error: "Internal server error" }, 500);
 	}
 });

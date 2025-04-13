@@ -26,9 +26,15 @@ function BooksTable() {
 						</tr>
 					</thead>
 					<tbody>
-						{books?.map((book) => (
-							<BookDetail key={book.id} book={book} />
-						))}
+						{Array.isArray(books) ? (
+							books.map((book) => <BookDetail key={book.id} book={book} />)
+						) : (
+							<tr>
+								<td colSpan={11} className='text-center py-4'>
+									No books available
+								</td>
+							</tr>
+						)}
 					</tbody>
 				</table>
 			</div>

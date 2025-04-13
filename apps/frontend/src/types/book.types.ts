@@ -12,3 +12,14 @@ export interface BookDetailProps {
 	createdAt?: Date;
 	updatedAt?: Date;
 }
+export interface CreateBookProps {
+	namaBuku: string;
+	kategoriBuku: string;
+	penerbit: string;
+	isbn: number;
+	issn: number;
+	pembuat: string;
+	tahunPembuatan: number;
+	harga: number;
+	keterangan: string;
+}
