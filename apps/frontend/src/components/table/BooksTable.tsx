@@ -5,7 +5,7 @@ import BookDetail from "./BookDetail";
 import { BooksTableProps } from "@/types/book.types";
 
 function BooksTable({ books, searchQuery }: BooksTableProps) {
-	const filteredBooks = books.filter((book) => {
+	const filteredBooks = (Array.isArray(books) ? books : []).filter((book) => {
 		return (
 			book.namaBuku.toLowerCase().includes(searchQuery.toLowerCase()) ||
 			book.kategoriBuku.toLowerCase().includes(searchQuery.toLowerCase()) ||
