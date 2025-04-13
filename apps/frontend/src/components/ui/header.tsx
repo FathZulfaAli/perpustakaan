@@ -1,11 +1,18 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Magnifier from "../../../public/magnifier";
 import { useRouter } from "next/navigation";
 
-function Header() {
+function Header({ onSearch }: { onSearch: (query: string) => void }) {
 	const router = useRouter();
+	const [searchQuery, setSearchQuery] = useState("");
+
+	const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setSearchQuery(event.target.value);
+		onSearch(event.target.value);
+	};
+
 	const onClick = () => {
 		router.push("/book/create");
 	};
@@ -16,7 +23,13 @@ function Header() {
 			<div className='flex flex-row items-center justify-center'>
 				<div className='flex items-center pl-2 w-80 h-10 rounded-lg bg-gray-300 focus:outline-none focus:border-blue-500 '>
 					<Magnifier />
-					<input type='text' placeholder='Search' className='focus:outline-none pl-2' />
+					<input
+						type='text'
+						placeholder='Search'
+						value={searchQuery}
+						onChange={handleSearchChange}
+						className='focus:outline-none pl-2'
+					/>
 				</div>
 				<button
 					onClick={onClick}

@@ -31,8 +31,7 @@ bookRoutes.post("/create", async (c) => {
 			!issn ||
 			!pembuat ||
 			!tahunPembuatan ||
-			!harga ||
-			!keterangan
+			!harga
 		) {
 			return c.json({ error: "All fields are required." }, 400);
 		}

@@ -1,11 +1,20 @@
 "use client";
 
-import { useBookQuery } from "@/hooks/useBooksQuery";
 import React from "react";
 import BookDetail from "./BookDetail";
+import { BooksTableProps } from "@/types/book.types";
 
-function BooksTable() {
-	const { data: books, isLoading } = useBookQuery();
+function BooksTable({ books, searchQuery }: BooksTableProps) {
+	const filteredBooks = books.filter((book) => {
+		return (
+			book.namaBuku.toLowerCase().includes(searchQuery.toLowerCase()) ||
+			book.kategoriBuku.toLowerCase().includes(searchQuery.toLowerCase()) ||
+			book.penerbit.toLowerCase().includes(searchQuery.toLowerCase()) ||
+			book.isbn.toString().includes(searchQuery) ||
+			book.issn.toString().includes(searchQuery) ||
+			book.pembuat.toLowerCase().includes(searchQuery.toLowerCase())
+		);
+	});
 	return (
 		<div className='w-full py-10 px-4 text-center text-black bg-white rounded-b-3xl text-sm'>
 			<div className='overflow-x-auto'>
@@ -26,12 +35,12 @@ function BooksTable() {
 						</tr>
 					</thead>
 					<tbody>
-						{Array.isArray(books) ? (
-							books.map((book) => <BookDetail key={book.id} book={book} />)
+						{filteredBooks.length > 0 ? (
+							filteredBooks.map((book) => <BookDetail key={book.id} book={book} />)
 						) : (
 							<tr>
 								<td colSpan={11} className='text-center py-4'>
-									No books available
+									No books found
 								</td>
 							</tr>
 						)}

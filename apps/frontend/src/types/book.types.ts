@@ -23,3 +23,8 @@ export interface CreateBookProps {
 	harga: number;
 	keterangan: string;
 }
+
+export interface BooksTableProps {
+	books: BookDetailProps[];
+	searchQuery: string;
+}
