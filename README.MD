@@ -21,7 +21,6 @@ perpustakaan/
 -   **`apps/`**: Contains the separate backend and frontend applications.
     -   **`backend/`**: The backend application, built with HonoJS for handling API requests.
     -   **`frontend/`**: The frontend application, built with Next.js, providing the user interface for the Perpustakaan project.
-        **`node_modules/`**: Contains all project dependencies.
 
 ---
 
@@ -62,9 +61,6 @@ backend : 3001
 
 ---
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
