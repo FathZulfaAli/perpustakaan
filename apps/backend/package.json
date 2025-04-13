@@ -2,9 +2,9 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.ts",
   "scripts": {
-    "dev": "tsx src/index.ts",
+    "dev": "nodemon",
     "build": "tsc"
   },
   "keywords": [],
@@ -13,12 +13,17 @@
   "type": "commonjs",
   "dependencies": {
     "@hono/node-server": "^1.14.1",
-    "better-sqlite3": "^11.9.1",
+    "@libsql/client": "^0.15.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
     "drizzle-orm": "^0.41.0",
-    "hono": "^4.7.6"
+    "hono": "^4.7.6",
+    "nanoid": "^5.1.5"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
+    "drizzle-kit": "^0.30.6",
+    "nodemon": "^3.1.9",
     "tsx": "^4.19.3",
     "typescript": "^5.8.3"
   }
